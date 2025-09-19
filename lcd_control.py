@@ -55,6 +55,7 @@ else:
 
             self.action = IARG_RESERVED
             self.adata = None
+            self.rdata = None
             self.bcall = None
 
             self.thread = threading.Thread(target=self.thr)
@@ -72,9 +73,9 @@ else:
                         continue
 
                     if self.action == EARG_COLOR:
-                        if self.adata is not True:
+                        if self.rdata is not True:
                             self.strip_fill(Color(*self.adata))
-                            self.adata = True
+                            self.rdata = True
 
                         continue
 
@@ -122,7 +123,7 @@ else:
                         skip = 1
 
                         if self.adata[0][0] == 0:
-                            self.color_wipe(Color(*self.adata[1]), self.adata[1], skip)
+                            self.color_wipe(Color(*self.adata[1]), self.adata[0][1], skip)
                             self.adata[0] = (1, 0) if self.adata[0][1] + skip >= self.strip.numPixels() else (0, self.adata[0][1] + skip)
                             time.sleep(0.001)
                         else:
@@ -171,6 +172,7 @@ else:
                 except Exception as e:
                     self.action = IARG_RESERVED
                     self.adata = None
+                    self.rdata = None
 
                     print(e)
                     traceback.print_exc()
@@ -234,6 +236,7 @@ else:
             def nbcall():
                 self.action = action
                 self.adata = data
+                self.rdata = None
 
             self.bcall = nbcall
 
