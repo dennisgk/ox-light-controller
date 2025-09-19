@@ -190,6 +190,10 @@ class HomeScreen(ControlScreen):
                 if func_val[2] is not None:
                     self.laction, self.ldata = func_val[2]()
 
+        print("REVERSION")
+        print(self.laction)
+        print(self.ldata)
+
     def get_cursor_color(self, offset):
         att_cols = self.emitter.config["colors"][self.emitter.config["pageIndex"]]
         len_col = len(att_cols)
