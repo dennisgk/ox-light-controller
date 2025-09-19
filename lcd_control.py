@@ -83,7 +83,9 @@ else:
                     curdat = self.adata[2]
 
                     def nbcall():
-                        if self.action != IARG_COLOR_TEMP_RUN:
+                        if self.action == IARG_COLOR_TEMP_RUN:
+                            self.bcall = nbcall
+                        else:
                             self.action = curac
                             self.adata = curdat
 
