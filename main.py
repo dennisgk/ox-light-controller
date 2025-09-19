@@ -1,3 +1,10 @@
+import os
+import time
+
+#if __name__ == "__main__":
+#    if os.name != "nt":
+#        time.sleep(20)
+
 import launchpad_py as lppy
 from event_emitter import EventEmitter
 from control_screen import HomeScreen
