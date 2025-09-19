@@ -72,9 +72,10 @@ else:
                     continue
 
                 if self.action == EARG_COLOR:
-                    self.strip_fill(Color(*self.adata))
+                    if self.adata is not True:
+                        self.strip_fill(Color(*self.adata))
+                        self.adata = True
 
-                    self.action = EARG_RESERVED
                     continue
 
                 if self.action == EARG_COLOR_TEMP:
@@ -240,8 +241,15 @@ else:
         def dispatch(self, action, data = None):
             print(action)
             print(data)
-            self.action = action
-            self.adata = data
+            tbcall = self.bcall
+            def nbcall():
+                self.action = action
+                self.adata = data
+
+                if tbcall is not None:
+                    tbcall()
+
+            self.bcall = nbcall
 
         def stop(self):        
             self.action = "STOP"
