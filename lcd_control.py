@@ -220,7 +220,7 @@ else:
             print(action)
             print(data)
             caction = self.action
-            cdata = self.data
+            cdata = self.adata
 
             def nbcall():
                 self.action = action
