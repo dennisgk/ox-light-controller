@@ -160,13 +160,13 @@ class HomeScreen(ControlScreen):
                 },
                 3: {
                     3: [lambda: (24, 58, 28), lambda: self.emitter.lcd.dispatch(EARG_CHRISTMAS), None],
-                    4: [lambda: (24, 58, 28), lambda: self.emitter.lcd.dispatch(EARG_COLOR_WIPE), None],
-                    5: [lambda: (24, 58, 28), lambda: self.emitter.lcd.dispatch(EARG_POLICE), None],
-                    6: [lambda: (24, 58, 28), lambda: self.emitter.lcd.dispatch(EARG_SECTION_WIPE), None]
+                    4: [lambda: (23, 1, 82), lambda: self.emitter.lcd.dispatch(EARG_COLOR_WIPE), None],
+                    5: [lambda: (26, 21, 55), lambda: self.emitter.lcd.dispatch(EARG_POLICE), None],
+                    6: [lambda: (0, 19, 34), lambda: self.emitter.lcd.dispatch(EARG_SECTION_WIPE), None]
                 },
                 4: {
-                    3: [lambda: (24, 58, 28), lambda: self.emitter.lcd.dispatch(EARG_STROBE), None],
-                    4: [lambda: (24, 58, 28), lambda: self.emitter.lcd.dispatch(EARG_THEATER_CHASE), None]
+                    3: [lambda: (12, 46, 51), lambda: self.emitter.lcd.dispatch(EARG_STROBE), None],
+                    4: [lambda: (34, 45, 12), lambda: self.emitter.lcd.dispatch(EARG_THEATER_CHASE), None]
                 }
             }
         }
