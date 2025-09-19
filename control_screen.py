@@ -163,13 +163,13 @@ class HomeScreen(ControlScreen):
                     8: [lambda: (10, 10, 10), lambda: self.emitter.lcd.dispatch(EARG_COLOR, (0, 0, 0)), lambda: self.emitter.lcd.dispatch(self.laction, self.ldata)]
                 },
                 3: {
-                    3: [lambda: (24, 58, 28), lambda: self.emitter.lcd.dispatch(EARG_CHRISTMAS, [(255, 0, 0), (0, 255, 0)]), None],
-                    4: [lambda: (23, 1, 82), lambda: self.emitter.lcd.dispatch(EARG_COLOR_WIPE), None],
-                    5: [lambda: (26, 21, 55), lambda: self.emitter.lcd.dispatch(EARG_POLICE), None],
-                    6: [lambda: (0, 19, 34), lambda: self.emitter.lcd.dispatch(EARG_SECTION_WIPE), None]
+                    3: [lambda: (24, 58, 28), lambda: self.emitter.lcd.dispatch(EARG_CHRISTMAS, [self.get_cursor_color(0), self.get_cursor_color(1)]), None],
+                    4: [lambda: (23, 1, 82), lambda: self.emitter.lcd.dispatch(EARG_COLOR_WIPE, [self.get_cursor_color(0), self.get_cursor_color(1)]), None],
+                    5: [lambda: (26, 21, 55), lambda: self.emitter.lcd.dispatch(EARG_POLICE, [self.get_cursor_color(0), self.get_cursor_color(1), self.get_cursor_color(2)]), None],
+                    6: [lambda: (0, 19, 34), lambda: self.emitter.lcd.dispatch(EARG_SECTION_WIPE, [self.get_cursor_color(0)]), None]
                 },
                 4: {
-                    3: [lambda: (12, 46, 51), lambda: self.emitter.lcd.dispatch(EARG_STROBE), None],
+                    3: [lambda: (12, 46, 51), lambda: self.emitter.lcd.dispatch(EARG_STROBE, [self.get_cursor_color(0), self.get_cursor_color(1)]), None],
                     4: [lambda: (34, 45, 12), lambda: self.emitter.lcd.dispatch(EARG_THEATER_CHASE), None]
                 }
             }

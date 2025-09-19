@@ -77,27 +77,27 @@ else:
                     continue
 
                 if self.action == EARG_STROBE:
-                    self.adata = 0
+                    self.adata = [0, *self.adata]
                     self.action = IARG_STROBE_RUN
 
                 if self.action == IARG_STROBE_RUN:
-                    col = Color(0, 0, 0) if self.adata % 2 == 0 else Color(255, 255, 255)
+                    col = Color(*self.adata[2]) if self.adata[0] % 2 == 0 else Color(*self.adata[1])
 
                     self.strip_fill(col)
                     time.sleep(0.04)
 
-                    self.adata = self.adata + 1
+                    self.adata[0] = self.adata[0] + 1
                     continue
 
                 if self.action == EARG_SECTION_WIPE:
-                    self.adata = 0
+                    self.adata = [0, *self.adata]
                     self.action = IARG_SECTION_WIPE_RUN
 
                 if self.action == IARG_SECTION_WIPE_RUN:
-                    self.strip_section_wipe(Color(255, 0, 0), self.adata, 5)
+                    self.strip_section_wipe(Color(*self.adata[1]), self.adata[0], 5)
                     time.sleep(0.050)
 
-                    self.adata = self.adata + 1
+                    self.adata[0] = self.adata[0] + 1
                     continue
 
                 if self.action == EARG_THEATER_CHASE:
@@ -113,19 +113,19 @@ else:
                     continue
 
                 if self.action == EARG_COLOR_WIPE:
-                    self.adata = (0, 0)
+                    self.adata = [(0, 0), *self.adata]
                     self.action = IARG_COLOR_WIPE_RUN
 
                 if self.action == IARG_COLOR_WIPE_RUN:
                     skip = 1
 
-                    if self.adata[0] == 0:
-                        self.color_wipe(Color(255, 0, 0), self.adata[1], skip)
-                        self.adata = (1, 0) if self.adata[1] + skip >= self.strip.numPixels() else (0, self.adata[1] + skip)
+                    if self.adata[0][0] == 0:
+                        self.color_wipe(Color(*self.adata[1]), self.adata[1], skip)
+                        self.adata[0] = (1, 0) if self.adata[0][1] + skip >= self.strip.numPixels() else (0, self.adata[0][1] + skip)
                         time.sleep(0.001)
                     else:
-                        self.color_wipe(Color(255, 255, 255), self.adata[1], skip)
-                        self.adata = (0, 0) if self.adata[1] + skip >= self.strip.numPixels() else (1, self.adata[1] + skip)
+                        self.color_wipe(Color(*self.adata[2]), self.adata[0][1], skip)
+                        self.adata[0] = (0, 0) if self.adata[0][1] + skip >= self.strip.numPixels() else (1, self.adata[0][1] + skip)
                         time.sleep(0.001)
 
                     continue
@@ -145,25 +145,25 @@ else:
                     continue
                 
                 if self.action == EARG_POLICE:
-                    self.adata = 0
+                    self.adata = [0, *self.adata]
                     self.action = IARG_POLICE_RUN
 
                 if self.action == IARG_POLICE_RUN:
                     sec = 5
 
                     col = None
-                    if self.adata % 3 == 0:
-                        col = Color(255, 0, 0)
-                    elif self.adata % 3 == 1:
-                        col = Color(255, 255, 255)
+                    if self.adata[0] % 3 == 0:
+                        col = Color(*self.adata[1])
+                    elif self.adata[0] % 3 == 1:
+                        col = Color(*self.adata[2])
                     else:
-                        col = Color(0, 0, 255)
+                        col = Color(*self.adata[3])
                     
-                    self.strip_section_wipe(col, self.adata, sec)
+                    self.strip_section_wipe(col, self.adata[0], sec)
 
                     time.sleep(0.04)
 
-                    self.adata = self.adata + 1
+                    self.adata[0] = self.adata[0] + 1
                     continue
 
         """START INTERNAL FUNCTIONS"""
