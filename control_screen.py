@@ -159,7 +159,7 @@ class HomeScreen(ControlScreen):
                     8: [lambda: (10, 10, 10), lambda: self.emitter.lcd.dispatch(EARG_COLOR_TEMP, [(0, 0, 0), self.emitter.lcd.action, self.emitter.lcd.adata]), lambda: self.emitter.lcd.dispatch(EARG_RESERVED)]
                 },
                 3: {
-                    3: [lambda: (24, 58, 28), lambda: self.emitter.lcd.dispatch(EARG_CHRISTMAS), None],
+                    3: [lambda: (24, 58, 28), lambda: self.emitter.lcd.dispatch(EARG_CHRISTMAS, [(255, 0, 0), (0, 255, 0)]), None],
                     4: [lambda: (23, 1, 82), lambda: self.emitter.lcd.dispatch(EARG_COLOR_WIPE), None],
                     5: [lambda: (26, 21, 55), lambda: self.emitter.lcd.dispatch(EARG_POLICE), None],
                     6: [lambda: (0, 19, 34), lambda: self.emitter.lcd.dispatch(EARG_SECTION_WIPE), None]

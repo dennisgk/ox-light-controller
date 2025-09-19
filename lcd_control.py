@@ -155,15 +155,15 @@ else:
                     continue
 
                 if self.action == EARG_CHRISTMAS:
-                    self.adata = 0
+                    self.adata = [0, *self.adata]
                     self.action = IARG_CHRISTMAS_RUN
                 
                 if self.action == IARG_CHRISTMAS_RUN:
                     skip = 1
 
-                    self.color_wipe(Color(255, 0, 0), self.adata % self.strip.numPixels(), skip)
-                    self.color_wipe(Color(0, 255, 0), (self.adata + int(self.strip.numPixels() / 2)) % self.strip.numPixels(), skip)
-                    self.adata = self.adata + skip
+                    self.color_wipe(Color(*self.adata[1]), self.adata[0] % self.strip.numPixels(), skip)
+                    self.color_wipe(Color(*self.adata[2]), (self.adata[0] + int(self.strip.numPixels() / 2)) % self.strip.numPixels(), skip)
+                    self.adata[0] = self.adata[0] + skip
                     time.sleep(0.010)
 
                     continue
