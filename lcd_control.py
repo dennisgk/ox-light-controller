@@ -1,9 +1,7 @@
 import threading
 import time
 
-EARG_RESERVED = "RESERVED"
 EARG_COLOR = "COLOR"
-EARG_COLOR_TEMP = "COLOR_TEMP"
 EARG_STROBE = "STROBE"
 EARG_SECTION_WIPE = "SECTION_WIPE"
 EARG_THEATER_CHASE = "THEATER_CHASE"
@@ -11,8 +9,8 @@ EARG_COLOR_WIPE = "COLOR_WIPE"
 EARG_CHRISTMAS = "CHRISTMAS"
 EARG_POLICE = "POLICE"
 
+IARG_RESERVED = "RESERVED"
 IARG_STOP = "STOP"
-IARG_COLOR_TEMP_RUN = "IARG_COLOR_TEMP_RUN"
 IARG_STROBE_RUN = "STROBE_RUN"
 IARG_SECTION_WIPE_RUN = "SECTION_WIPE_RUN"
 IARG_THEATER_CHASE_RUN = "THEATER_CHASE_RUN"
@@ -25,7 +23,7 @@ import os
 if os.name == "nt":
     class LcdControl():
         def __init__(self):
-            self.action = EARG_RESERVED
+            self.action = IARG_RESERVED
             self.adata = None
 
         def dispatch(self, action, data = None):
@@ -54,7 +52,7 @@ else:
             # Intialize the library (must be called once before other functions).
             self.strip.begin()
 
-            self.action = EARG_RESERVED
+            self.action = IARG_RESERVED
             self.adata = None
             self.bcall = None
 
@@ -68,7 +66,7 @@ else:
                     self.bcall = None
                     scall()
 
-                if self.action == EARG_RESERVED:
+                if self.action == IARG_RESERVED:
                     continue
 
                 if self.action == EARG_COLOR:
@@ -76,28 +74,6 @@ else:
                         self.strip_fill(Color(*self.adata))
                         self.adata = True
 
-                    continue
-
-                if self.action == EARG_COLOR_TEMP:
-                    curac = self.adata[1]
-                    curdat = self.adata[2]
-
-                    def nbcall():
-                        if self.action == IARG_COLOR_TEMP_RUN:
-                            self.bcall = nbcall
-                        else:
-                            self.action = curac
-                            self.adata = curdat
-
-                    self.bcall = nbcall
-
-                    self.action = IARG_COLOR_TEMP_RUN
-                    continue
-
-                if self.action == IARG_COLOR_TEMP_RUN:
-                    if self.adata is not True:
-                        self.strip_fill(Color(*self.adata[0]))
-                        self.adata = True
                     continue
 
                 if self.action == EARG_STROBE:
@@ -243,15 +219,16 @@ else:
         def dispatch(self, action, data = None):
             print(action)
             print(data)
-            tbcall = self.bcall
+            caction = self.action
+            cdata = self.data
+
             def nbcall():
                 self.action = action
                 self.adata = data
 
-                if tbcall is not None:
-                    tbcall()
-
             self.bcall = nbcall
+
+            return caction, cdata
 
         def stop(self):        
             self.action = "STOP"

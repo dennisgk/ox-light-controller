@@ -2,7 +2,7 @@ import launchpad_py
 from event_emitter import EventEmitter
 import math
 
-from lcd_control import EARG_CHRISTMAS, EARG_COLOR, EARG_COLOR_WIPE, EARG_POLICE, EARG_SECTION_WIPE, EARG_STROBE, EARG_THEATER_CHASE, EARG_COLOR_TEMP, EARG_RESERVED
+from lcd_control import EARG_CHRISTMAS, EARG_COLOR, EARG_COLOR_WIPE, EARG_POLICE, EARG_SECTION_WIPE, EARG_STROBE, EARG_THEATER_CHASE
 
 class ControlScreen():
     def __init__(self, lp: launchpad_py.LaunchpadMk2, emitter: EventEmitter):
@@ -126,6 +126,10 @@ class ColorScreen(ControlScreen):
 class HomeScreen(ControlScreen):
     def __init__(self, lp, emitter):
         super().__init__(lp, emitter)
+
+        self.laction = emitter.lcd.action
+        self.ldata = emitter.lcd.adata
+
         for x in range(0, 8):
             self.register_button(x, 0, lambda x=x: self.set_cursor(x))
 
@@ -150,13 +154,13 @@ class HomeScreen(ControlScreen):
                     8: [lambda: (10, 10, 10), lambda: self.emitter.lcd.dispatch(EARG_COLOR, (0, 0, 0)), None]
                 },
                 1: {
-                    2: [lambda: self.get_cursor_color(0), lambda: self.emitter.lcd.dispatch(EARG_COLOR_TEMP, [self.get_cursor_color(0), self.emitter.lcd.action, self.emitter.lcd.adata]), lambda: self.emitter.lcd.dispatch(EARG_RESERVED)],
-                    3: [lambda: self.get_cursor_color(1), lambda: self.emitter.lcd.dispatch(EARG_COLOR_TEMP, [self.get_cursor_color(1), self.emitter.lcd.action, self.emitter.lcd.adata]), lambda: self.emitter.lcd.dispatch(EARG_RESERVED)],
-                    4: [lambda: self.get_cursor_color(2), lambda: self.emitter.lcd.dispatch(EARG_COLOR_TEMP, [self.get_cursor_color(2), self.emitter.lcd.action, self.emitter.lcd.adata]), lambda: self.emitter.lcd.dispatch(EARG_RESERVED)],
-                    5: [lambda: self.get_cursor_color(3), lambda: self.emitter.lcd.dispatch(EARG_COLOR_TEMP, [self.get_cursor_color(3), self.emitter.lcd.action, self.emitter.lcd.adata]), lambda: self.emitter.lcd.dispatch(EARG_RESERVED)],
-                    6: [lambda: self.get_cursor_color(4), lambda: self.emitter.lcd.dispatch(EARG_COLOR_TEMP, [self.get_cursor_color(4), self.emitter.lcd.action, self.emitter.lcd.adata]), lambda: self.emitter.lcd.dispatch(EARG_RESERVED)],
-                    7: [lambda: self.get_cursor_color(5), lambda: self.emitter.lcd.dispatch(EARG_COLOR_TEMP, [self.get_cursor_color(5), self.emitter.lcd.action, self.emitter.lcd.adata]), lambda: self.emitter.lcd.dispatch(EARG_RESERVED)],
-                    8: [lambda: (10, 10, 10), lambda: self.emitter.lcd.dispatch(EARG_COLOR_TEMP, [(0, 0, 0), self.emitter.lcd.action, self.emitter.lcd.adata]), lambda: self.emitter.lcd.dispatch(EARG_RESERVED)]
+                    2: [lambda: self.get_cursor_color(0), lambda: self.emitter.lcd.dispatch(EARG_COLOR, self.get_cursor_color(0)), lambda: self.emitter.lcd.dispatch(self.laction, self.ldata)],
+                    3: [lambda: self.get_cursor_color(1), lambda: self.emitter.lcd.dispatch(EARG_COLOR, self.get_cursor_color(1)), lambda: self.emitter.lcd.dispatch(self.laction, self.ldata)],
+                    4: [lambda: self.get_cursor_color(2), lambda: self.emitter.lcd.dispatch(EARG_COLOR, self.get_cursor_color(2)), lambda: self.emitter.lcd.dispatch(self.laction, self.ldata)],
+                    5: [lambda: self.get_cursor_color(3), lambda: self.emitter.lcd.dispatch(EARG_COLOR, self.get_cursor_color(3)), lambda: self.emitter.lcd.dispatch(self.laction, self.ldata)],
+                    6: [lambda: self.get_cursor_color(4), lambda: self.emitter.lcd.dispatch(EARG_COLOR, self.get_cursor_color(4)), lambda: self.emitter.lcd.dispatch(self.laction, self.ldata)],
+                    7: [lambda: self.get_cursor_color(5), lambda: self.emitter.lcd.dispatch(EARG_COLOR, self.get_cursor_color(5)), lambda: self.emitter.lcd.dispatch(self.laction, self.ldata)],
+                    8: [lambda: (10, 10, 10), lambda: self.emitter.lcd.dispatch(EARG_COLOR, (0, 0, 0)), lambda: self.emitter.lcd.dispatch(self.laction, self.ldata)]
                 },
                 3: {
                     3: [lambda: (24, 58, 28), lambda: self.emitter.lcd.dispatch(EARG_CHRISTMAS, [(255, 0, 0), (0, 255, 0)]), None],
@@ -181,10 +185,10 @@ class HomeScreen(ControlScreen):
         if func_val is not None:
             if is_down:
                 if func_val[1] is not None:
-                    func_val[1]()
+                    self.laction, self.ldata = func_val[1]()
             else:
                 if func_val[2] is not None:
-                    func_val[2]()
+                    self.laction, self.ldata = func_val[2]()
 
     def get_cursor_color(self, offset):
         att_cols = self.emitter.config["colors"][self.emitter.config["pageIndex"]]
